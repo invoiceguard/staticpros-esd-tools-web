@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Free ESD Calibration Tools | Static Pros</title>
+    <meta name="description" content="Free ESD compliance tools for electronics manufacturers. Calculate calibration costs, check audit readiness, track due dates, validate test results, and verify NIST traceability.">
+    <meta name="keywords" content="ESD calibration cost, ANSI ESD S20.20 audit, ISO17025 calibration, NIST traceable calibration, ESD testing tools">
+    
+    <!-- Open Graph -->
+    <meta property="og:title" content="Free ESD Calibration Tools | Static Pros">
+    <meta property="og:description" content="Calculate ESD calibration costs, check compliance, track due dates - 5 free tools for electronics manufacturers.">
+    <meta property="og:type" content="website">
+    
+    <!-- Schema Markup -->
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "WebSite",
+        "name": "Static Pros ESD Tools",
+        "description": "Free ESD compliance tools and calculators for electronics manufacturers",
+        "url": "https://tools.staticpros.com"
+    }
+    </script>
+    
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background: #f5f7fa;
+        }
+        .container { max-width: 1200px; margin: 0 auto; padding: 0 20px; }
+        
+        header {
+            background: linear-gradient(135deg, #1e3a5f 0%, #2c5282 100%);
+            color: white;
+            padding: 60px 0;
+            text-align: center;
+        }
+        header h1 { font-size: 2.5rem; margin-bottom: 15px; }
+        header p { font-size: 1.2rem; opacity: 0.9; max-width: 600px; margin: 0 auto 25px; }
+        .cta-button {
+            display: inline-block;
+            background: #48bb78;
+            color: white;
+            padding: 15px 40px;
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 1.1rem;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+        .cta-button:hover { transform: translateY(-2px); box-shadow: 0 10px 30px rgba(72, 187, 120, 0.3); }
+        
+        .badges {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            margin-top: 30px;
+            flex-wrap: wrap;
+        }
+        .badge {
+            background: rgba(255,255,255,0.15);
+            padding: 8px 20px;
+            border-radius: 20px;
+            font-size: 0.9rem;
+        }
+        
+        .tools-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 30px;
+            padding: 60px 0;
+        }
+        .tool-card {
+            background: white;
+            border-radius: 12px;
+            padding: 30px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+            transition: transform 0.2s, box-shadow 0.2s;
+            border: 1px solid #e2e8f0;
+        }
+        .tool-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 30px rgba(0,0,0,0.12);
+        }
+        .tool-icon {
+            width: 60px;
+            height: 60px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 1.5rem;
+            margin-bottom: 20px;
+        }
+        .tool-card h3 { font-size: 1.3rem; margin-bottom: 10px; color: #1e3a5f; }
+        .tool-card p { color: #666; margin-bottom: 20px; }
+        .tool-link {
+            display: inline-flex;
+            align-items: center;
+            color: #4299e1;
+            text-decoration: none;
+            font-weight: 600;
+        }
+        .tool-link:hover { color: #2b6cb0; }
+        .tool-link::after {
+            content: "→";
+            margin-left: 5px;
+            transition: transform 0.2s;
+        }
+        .tool-link:hover::after { transform: translateX(5px); }
+        
+        .why-section {
+            background: white;
+            padding: 60px 0;
+        }
+        .why-section h2 {
+            text-align: center;
+            font-size: 2rem;
+            margin-bottom: 40px;
+            color: #1e3a5f;
+        }
+        .features {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 30px;
+        }
+        .feature {
+            text-align: center;
+            padding: 20px;
+        }
+        .feature h4 { color: #2d3748; margin-bottom: 10px; }
+        .feature p { color: #718096; font-size: 0.95rem; }
+        
+        footer {
+            background: #1e3a5f;
+            color: white;
+            padding: 40px 0;
+            text-align: center;
+        }
+        footer a { color: #63b3ed; text-decoration: none; }
+        
+        @media (max-width: 768px) {
+            header h1 { font-size: 1.8rem; }
+            .tool-card { padding: 20px; }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container">
+            <h1>Free ESD Compliance Tools</h1>
+            <p>Professional-grade calculators and checkers for electronics manufacturers, defense contractors, and aerospace companies.</p>
+            <a href="#tools" class="cta-button">Start Using Tools →</a>
+            <div class="badges">
+                <span class="badge">✓ ISO 17025 Accredited</span>
+                <span class="badge">✓ ANSI/ESD S20.20 Compliant</span>
+                <span class="badge">✓ NIST Traceable</span>
+            </div>
+        </div>
+    </header>
+    
+    <section id="tools" class="container">
+        <div class="tools-grid">
+            <div class="tool-card">
+                <div class="tool-icon">💰</div>
+                <h3>Quote Calculator</h3>
+                <p>Get instant pricing for ESD workstation calibration. Calculate costs for multiple locations and service tiers.</p>
+                <a href="tool-1-quote-calculator.html" class="tool-link">Calculate Your Cost</a>
+            </div>
+            
+            <div class="tool-card">
+                <div class="tool-icon">⚠️</div>
+                <h3>Compliance Risk Score</h3>
+                <p>10-question assessment of your ANSI/ESD S20.20 audit readiness. Identify critical gaps before auditors do.</p>
+                <a href="tool-2-compliance-risk.html" class="tool-link">Take the Assessment</a>
+            </div>
+            
+            <div class="tool-card">
+                <div class="tool-icon">📅</div>
+                <h3>Due Date Tracker</h3>
+                <p>Calculate your next calibration due date. Never miss a compliance deadline with automated reminders.</p>
+                <a href="tool-3-due-date-tracker.html" class="tool-link">Track Your Dates</a>
+            </div>
+            
+            <div class="tool-card">
+                <div class="tool-icon">✅</div>
+                <h3>Pass/Fail Checker</h3>
+                <p>Validate megohm readings against ANSI/ESD S20.20 standards. Instant pass/fail determination for field tests.</p>
+                <a href="tool-4-pass-fail-checker.html" class="tool-link">Check Your Readings</a>
+            </div>
+            
+            <div class="tool-card">
+                <div class="tool-icon">🔍</div>
+                <h3>Traceability Gap Finder</h3>
+                <p>Verify if your calibration certificates are truly NIST-traceable. Spot fake or incomplete documentation.</p>
+                <a href="tool-5-traceability-gap-finder.html" class="tool-link">Verify Certificates</a>
+            </div>
+            
+            <div class="tool-card" style="background: linear-gradient(135deg, #1e3a5f 0%, #2c5282 100%); color: white;">
+                <div class="tool-icon" style="background: white; color: #1e3a5f;">📞</div>
+                <h3 style="color: white;">Need Expert Help?</h3>
+                <p style="color: rgba(255,255,255,0.9);">Get ISO 17025 accredited calibration from the team that built these tools. On-site service available.</p>
+                <a href="https://staticpros.com/contact" class="tool-link" style="color: #48bb78;">Contact Static Pros →</a>
+            </div>
+        </div>
+    </section>
+    
+    <section class="why-section">
+        <div class="container">
+            <h2>Why These Tools Matter</h2>
+            <div class="features">
+                <div class="feature">
+                    <h4>⏱️ Instant Results</h4>
+                    <p>No waiting. Get answers immediately without phone calls or emails.</p>
+                </div>
+                <div class="feature">
+                    <h4>🎯 Standards-Based</h4>
+                    <p>All calculations use current ANSI/ESD S20.20 and ISO 17025 standards.</p>
+                </div>
+                <div class="feature">
+                    <h4>🔒 Private & Secure</h4>
+                    <p>No data collection. Everything works in your browser, nothing sent to servers.</p>
+                </div>
+                <div class="feature">
+                    <h4>💯 Free Forever</h4>
+                    <p>No signup required. Use these tools as much as you need.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <footer>
+        <div class="container">
+            <p>© 2026 <a href="https://staticpros.com">Static Pros</a> / <a href="https://alternatesystems.com">Alternate Systems LLC</a></p>
+            <p style="margin-top: 10px; opacity: 0.8; font-size: 0.9rem;">ISO 17025 Accredited | NIST Traceable | Dallas, TX</p>
+        </div>
+    </footer>
+</body>
+</html>
