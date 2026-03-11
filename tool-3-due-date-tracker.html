@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ESD Calibration Due Date Tracker | Static Pros</title>
+    <meta name="description" content="Calculate your next ESD calibration due date. Never miss a compliance deadline with automated reminders.">
+    <meta name="keywords" content="ESD calibration schedule, when to calibrate ESD equipment, calibration due date, compliance tracking">
+    
+    <meta property="og:title" content="ESD Calibration Due Date Tracker | Static Pros">
+    <meta property="og:description" content="Calculate your next ESD calibration due date and never miss a deadline.">
+    
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; background: #f5f7fa; color: #333; line-height: 1.6; }
+        .container { max-width: 800px; margin: 0 auto; padding: 20px; }
+        
+        header { background: linear-gradient(135deg, #1e3a5f, #2c5282); color: white; padding: 40px 0; text-align: center; }
+        header h1 { font-size: 2rem; margin-bottom: 10px; }
+        header p { opacity: 0.9; max-width: 600px; margin: 0 auto; }
+        
+        .tracker { background: white; margin: 30px 0; padding: 40px; border-radius: 12px; box-shadow: 0 4px 20px rgba(0,0,0,0.1); }
+        
+        .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+        @media (max-width: 600px) { .form-grid { grid-template-columns: 1fr; } }
+        
+        .form-group { margin-bottom: 25px; }
+        label { display: block; font-weight: 600; margin-bottom: 10px; color: #2d3748; }
+        input, select { width: 100%; padding: 15px; border: 2px solid #e2e8f0; border-radius: 8px; font-size: 1rem; }
+        input:focus, select:focus { outline: none; border-color: #4299e1; }
+        
+        .workstation-card { background: #f7fafc; border: 2px solid #e2e8f0; border-radius: 12px; padding: 25px; margin: 15px 0; }
+        .workstation-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; }
+        .workstation-id { font-weight: 600; color: #1e3a5f; }
+        .status-badge { padding: 6px 15px; border-radius: 20px; font-size: 0.85rem; font-weight: 600; }
+        .status-current { background: #c6f6d5; color: #22543d; }
+        .status-warning { background: #feebc8; color: #744210; }
+        .status-overdue { background: #fed7d7; color: #742a2a; }
+        
+        .due-date { font-size: 1.5rem; font-weight: bold; color: #2d3748; }
+        .days-remaining { margin-top: 10px; font-size: 1.1rem; }
+        
+        .add-btn { width: 100%; padding: 15px; background: #4299e1; color: white; border: none; border-radius: 8px; font-size: 1rem; font-weight: 600; cursor: pointer; margin: 20px 0; }
+        .add-btn:hover { background: #3182ce; }
+        
+        .result { display: none; }
+        .result.visible { display: block; }
+        
+        .cta-section { margin-top: 40px; padding: 30px; background: linear-gradient(135deg, #1e3a5f, #2c5282); border-radius: 12px; text-align: center; color: white; }
+        .cta-section h3 { margin-bottom: 15px; }
+        .cta-section p { opacity: 0.9; margin-bottom: 20px; }
+        .cta-button { display: inline-block; background: #48bb78; color: white; padding: 15px 40px; border-radius: 50px; text-decoration: none; font-weight: 600; }
+        
+        table { width: 100%; border-collapse: collapse; margin-top: 20px; }
+        th, td { padding: 15px; text-align: left; border-bottom: 1px solid #e2e8f0; }
+        th { background: #f7fafc; font-weight: 600; color: #4a5568; }
+        
+        .back-link { display: inline-flex; align-items: center; color: #4299e1; text-decoration: none; margin-bottom: 20px; }
+        .back-link::before { content: "←"; margin-right: 5px; }
+        
+        footer { background: #1e3a5f; color: white; padding: 30px 0; text-align: center; margin-top: 40px; }
+        footer a { color: #63b3ed; }
+        
+        .remove-btn { background: #f56565; color: white; border: none; padding: 8px 15px; border-radius: 6px; cursor: pointer; font-size: 0.85rem; }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container">
+            <h1>Calibration Due Date Tracker</h1>
+            <p>Calculate your next ESD calibration due dates. Never miss a compliance deadline.</p>
+        </div>
+    </header>
+    
+    <div class="container">
+        <a href="index.html" class="back-link">← Back to All Tools</a>
+        
+        <div class="tracker">
+            <h2 style="margin-bottom: 25px;">Workstation Due Dates</h2>
+            
+            <div id="workstations">
+                <div class="workstation-input" data-index="0">
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label>Asset ID / Location</label>
+                            <input type="text" class="asset-id" placeholder="e.g., Station A, Bench 01">
+                        </div>
+                        <div class="form-group">
+                            <label>Last Calibration Date</label>
+                            <input type="date" class="last-date">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label>Calibration Interval</label>
+                        <select class="interval">
+                            <option value="12">12 months (Standard ANSI/ESD S20.20)</option>
+                            <option value="6">6 months</option>
+                            <option value="3">3 months</option>
+                            <option value="24">24 months</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+            
+            <button class="add-btn" onclick="addWorkstation()">+ Add Another Workstation</button>
+            
+            <button class="add-btn" style="background: #48bb78;" onclick="calculate()">Calculate Due Dates</button>
+            
+            <div class="result" id="results">
+                <h3 style="margin-top: 30px;">Calibration Schedule</h3>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Asset ID</th>
+                            <th>Due Date</th>
+                            <th>Status</th>
+                            <th>Days Left</th>
+                        </tr>
+                    </thead>
+                    <tbody id="resultsTable"></tbody>
+                </table>
+            </div>
+            
+            <div class="cta-section" id="ctaSection" style="display: none;">
+                <h3>Need Help Staying Compliant?</h3>
+                <p>We can set up automatic scheduling and reminders for your calibration program.</p>
+                <a href="https://staticpros.com/contact" class="cta-button">Schedule Calibration Service →</a>
+            </div>
+        </div>
+    </div>
+    
+    <footer>
+        <div class="container">
+            <p>© 2026 <a href="https://staticpros.com">Static Pros</a> / <a href="https://alternatesystems.com">Alternate Systems LLC</a></p>
+            <p style="margin-top: 10px; opacity: 0.8;">ISO 17025 Accredited | NIST Traceable</p>
+        </div>
+    </footer>
+    
+    <script>
+        let stationCount = 1;
+        
+        function addWorkstation() {
+            const container = document.getElementById('workstations');
+            const div = document.createElement('div');
+            div.className = 'workstation-input';
+            div.dataset.index = stationCount;
+            div.innerHTML = `
+                <hr style="margin: 25px 0;">
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label>Asset ID / Location</label>
+                        <input type="text" class="asset-id" placeholder="e.g., Station B, Bench 02">
+                    </div>
+                    <div class="form-group">
+                        <label>Last Calibration Date</label>
+                        <input type="date" class="last-date">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label>Calibration Interval</label>
+                    <select class="interval">
+                        <option value="12">12 months (Standard ANSI/ESD S20.20)</option>
+                        <option value="6">6 months</option>
+                        <option value="3">3 months</option>
+                        <option value="24">24 months</option>
+                    </select>
+                </div>
+                <button class="remove-btn" onclick="this.parentElement.remove()">Remove</button>
+            `;
+            container.appendChild(div);
+            stationCount++;
+        }
+        
+        function calculate() {
+            const inputs = document.querySelectorAll('.workstation-input');
+            const results = [];
+            
+            inputs.forEach(input => {
+                const assetId = input.querySelector('.asset-id').value || 'Unnamed Station';
+                const lastDate = input.querySelector('.last-date').value;
+                const interval = parseInt(input.querySelector('.interval').value);
+                
+                if (!lastDate) return;
+                
+                const last = new Date(lastDate);
+                const due = new Date(last);
+                due.setMonth(due.getMonth() + interval);
+                
+                const today = new Date();
+                const daysDiff = Math.floor((due - today) / (1000 * 60 * 60 * 24));
+                
+                let status, statusClass;
+                if (daysDiff < 0) {
+                    status = 'OVERDUE';
+                    statusClass = 'status-overdue';
+                } else if (daysDiff <= 30) {
+                    status = 'DUE SOON';
+                    statusClass = 'status-warning';
+                } else {
+                    status = 'CURRENT';
+                    statusClass = 'status-current';
+                }
+                
+                results.push({
+                    assetId,
+                    dueDate: due.toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' }),
+                    status,
+                    statusClass,
+                    daysLeft: daysDiff < 0 ? daysDiff : `+${daysDiff}`
+                });
+            });
+            
+            const tbody = document.getElementById('resultsTable');
+            tbody.innerHTML = results.map(r => `
+                <tr>
+                    <td><strong>${r.assetId}</strong></td>
+                    <td>${r.dueDate}</td>
+                    <td><span class="status-badge ${r.statusClass}">${r.status}</span></td>
+                    <td>${r.daysLeft} days</td>
+                </tr>
+            `).join('');
+            
+            document.getElementById('results').classList.add('visible');
+            document.getElementById('ctaSection').style.display = 'block';
+        }
+    </script>
+</body>
+</html>

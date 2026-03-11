@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NIST Traceability Gap Finder | Static Pros</title>
+    <meta name="description" content="Verify if your calibration certificates are truly NIST-traceable. Spot fake or incomplete documentation before auditors do.">
+    <meta name="keywords" content="NIST traceable calibration, ISO17025 certificate validation, fake calibration certificates, calibration certificate check">
+    
+    <meta property="og:title" content="NIST Traceability Gap Finder | Static Pros">
+    <meta property="og:description" content="Verify if your calibration certificates are truly NIST-traceable.">
+    
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; background: #f5f7fa; color: #333; line-height: 1.6; }
+        .container { max-width: 850px; margin: 0 auto; padding: 20px; }
+        
+        header { background: linear-gradient(135deg, #1e3a5f, #2c5282); color: white; padding: 40px 0; text-align: center; }
+        header h1 { font-size: 2rem; margin-bottom: 10px; }
+        header p { opacity: 0.9; max-width: 600px; margin: 0 auto; }
+        
+        .checker { background: white; margin: 30px 0; padding: 40px; border-radius: 12px; box-shadow: 0 4px 20px rgba(0,0,0,0.1); }
+        
+        .intro { background: #ebf8ff; border-left: 4px solid #4299e1; padding: 20px; margin-bottom: 30px; border-radius: 0 8px 8px 0; }
+        .intro h3 { color: #1e3a5f; margin-bottom: 10px; }
+        .intro p { color: #4a5568; }
+        
+        .check-item { padding: 25px; border: 2px solid #e2e8f0; border-radius: 12px; margin: 20px 0; }
+        .check-item:hover { border-color: #4299e1; }
+        .check-item h4 { color: #1e3a5f; margin-bottom: 15px; display: flex; align-items: center; }
+        .check-item h4 .num { width: 30px; height: 30px; background: #4299e1; color: white; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin-right: 12px; font-size: 0.9rem; }
+        
+        .options { display: grid; gap: 12px; }
+        .option { display: flex; align-items: center; padding: 15px; background: #f7fafc; border-radius: 8px; cursor: pointer; transition: all 0.2s; }
+        .option:hover { background: #ebf8ff; }
+        .option input { margin-right: 12px; }
+        .option.good { background: #c6f6d5; }
+        .option.bad { background: #fed7d7; }
+        
+        .gap-alert { display: none; background: #fed7d7; border: 2px solid #f56565; border-radius: 8px; padding: 15px; margin-top: 15px; }
+        .gap-alert.visible { display: block; }
+        .gap-alert h5 { color: #742a2a; margin-bottom: 8px; }
+        
+        .summary { background: linear-gradient(135deg, #1e3a5f, #2c5282); color: white; border-radius: 12px; padding: 40px; margin-top: 30px; display: none; }
+        .summary.visible { display: block; }
+        .summary h2 { margin-bottom: 20px; }
+        
+        .score-display { text-align: center; margin-bottom: 30px; }
+        .score-number { font-size: 4rem; font-weight: bold; }
+        .score-label { font-size: 1.2rem; opacity: 0.9; }
+        
+        .gaps-found { background: rgba(255,255,255,0.1); border-radius: 8px; padding: 25px; margin: 20px 0; }
+        .gaps-found h3 { margin-bottom: 15px; }
+        .gaps-found ul { list-style: none; }
+        .gaps-found li { padding: 10px 0; border-bottom: 1px solid rgba(255,255,255,0.2); }
+        .gaps-found li:last-child { border-bottom: none; }
+        .gaps-found li::before { content: "⚠️ "; }
+        
+        .analyze-btn { width: 100%; padding: 20px; background: #4299e1; color: white; border: none; border-radius: 8px; font-size: 1.2rem; font-weight: 600; cursor: pointer; margin: 30px 0; }
+        .analyze-btn:hover { background: #3182ce; }
+        
+        .cta-section { margin-top: 30px; padding: 30px; background: rgba(255,255,255,0.1); border-radius: 12px; text-align: center; }
+        .cta-section h3 { margin-bottom: 15px; }
+        .cta-section p { opacity: 0.9; margin-bottom: 20px; }
+        .cta-button { display: inline-block; background: #48bb78; color: white; padding: 15px 40px; border-radius: 50px; text-decoration: none; font-weight: 600; }
+        
+        .back-link { display: inline-flex; align-items: center; color: #4299e1; text-decoration: none; margin-bottom: 20px; }
+        .back-link::before { content: "←"; margin-right: 5px; }
+        
+        footer { background: #1e3a5f; color: white; padding: 30px 0; text-align: center; margin-top: 40px; }
+        footer a { color: #63b3ed; }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container">
+            <h1>NIST Traceability Gap Finder</h1>
+            <p>Verify if your calibration certificates are truly NIST-traceable</p>
+        </div>
+    </header>
+    
+    <div class="container">
+        <a href="index.html" class="back-link">← Back to All Tools</a>
+        
+        <div class="checker">
+            <div class="intro">
+                <h3>⚠️ Why This Matters</h3>
+                <p>Many "calibration" certificates lack true NIST traceability. Use this checker to identify gaps that could fail your audit. Look at your certificates and answer honestly.</p>
+            </div>
+            
+            <div class="check-item" data-check="1">
+                <h4><span class="num">1</span> Does your certificate show an ISO/IEC 17025 accreditation number?</h4>
+                <div class="options">
+                    <label class="option">
+                        <input type="radio" name="q1" value="yes" onchange="updateCheck(1, true)">
+                        <span>Yes, clearly stated with accreditation body (A2LA, ANAB, etc.)</span>
+                    </label>
+                    <label class="option">
+                        <input type="radio" name="q1" value="no" onchange="updateCheck(1, false)">
+                        <span>No number found / says "compliant with" but no accreditation</span>
+                    </label>
+                    <label class="option">
+                        <input type="radio" name="q1" value="unsure" onchange="updateCheck(1, false)">
+                        <span>Not sure / can't find it</span>
+                    </label>
+                </div>
+                <div class="gap-alert" id="gap1">
+                    <h5>🚨 CRITICAL GAP</h5>
+                    <p>Without ISO 17025 accreditation, your certificates may not be accepted by auditors. The lab must be accredited by an ILAC MRA signatory (A2LA, ANAB, etc.).</p>
+                </div>
+            </div>
+            
+            <div class="check-item" data-check="2">
+                <h4><span class="num">2</span> Is there a NIST traceability statement?</h4>
+                <div class="options">
+                    <label class="option">
+                        <input type="radio" name="q2" value="yes" onchange="updateCheck(2, true)">
+                        <span>Yes, explicitly states "traceable to NIST" or NIST SRMs listed</span>
+                    </label>
+                    <label class="option">
+                        <input type="radio" name="q2" value="no" onchange="updateCheck(2, false)">
+                        <span>No NIST statement / vague wording like "traceable to national standards"</span>
+                    </label>
+                    <label class="option">
+                        <input type="radio" name="q2" value="unsure" onchange="updateCheck(2, false)">
+                        <span>Can't find it</span>
+                    </label>
+                </div>
+                <div class="gap-alert" id="gap2">
+                    <h5>🚨 CRITICAL GAP</h5>
+                    <p>ANSI/ESD S20.20 requires NIST-specific traceability. Generic "national standards" claims are insufficient for defense/aerospace compliance.</p>
+                </div>
+            </div>
+            
+            <div class="check-item" data-check="3">
+                <h4><span class="num">3</span> Does it show measurement uncertainty?</h4>
+                <div class="options">
+                    <label class="option">
+                        <input type="radio" name="q3" value="yes" onchange="updateCheck(3, true)">
+                        <span>Yes, uncertainty values listed for each measurement</span>
+                    </label>
+                    <label class="option">
+                        <input type="radio" name="q3" value="no" onchange="updateCheck(3, false)">
+                        <span>No uncertainty values shown</span>
+                    </label>
+                    <label class="option">
+                        <input type="radio" name="q3" value="unsure" onchange="updateCheck(3, false)">
+                        <span>Don't see it</span>
+                    </label>
+                </div>
+                <div class="gap-alert" id="gap3">
+                    <h5>⚠️ MODERATE GAP</h5>
+                    <p>ISO 17025 requires documented measurement uncertainty. Without it, you can't properly assess compliance risk (pass/fail could be in the noise).</p>
+                </div>
+            </div>
+            
+            <div class="check-item" data-check="4">
+                <h4><span class="num">4</span> Are calibration dates and intervals listed?</h4>
+                <div class="options">
+                    <label class="option">
+                        <input type="radio" name="q4" value="yes" onchange="updateCheck(4, true)">
+                        <span>Yes, calibration date and next due date clearly shown</span>
+                    </label>
+                    <label class="option">
+                        <input type="radio" name="q4" value="no" onchange="updateCheck(4, false)">
+                        <span>Only has issue date, no calibration dates</span>
+                    </label>
+                    <label class="option">
+                        <input type="radio" name="q4" value="unsure" onchange="updateCheck(4, false)">
+                        <span>Not sure what I'm looking at</span>
+                    </label>
+                </div>
+                <div class="gap-alert" id="gap4">
+                    <h5>⚠️ MODERATE GAP</h5>
+                    <p>Valid certificates must show when calibration was performed and when it expires. An "issue date" without calibration data could mean it's just a template.</p>
+                </div>
+            </div>
+            
+            <div class="check-item" data-check="5">
+                <h4><span class="num">5</span> Does it list the actual equipment tested?</h4>
+                <div class="options">
+                    <label class="option">
+                        <input type="radio" name="q5" value="yes" onchange="updateCheck(5, true)">
+                        <span>Yes, specific asset IDs, serial numbers, or locations listed</span>
+                    </label>
+                    <label class="option">
+                        <input type="radio" name="q5" value="no" onchange="updateCheck(5, false)">
+                        <span>Generic description only ("workstation 1", "bench A")</span>
+                    </label>
+                    <label class="option">
+                        <input type="radio" name="q5" value="unsure" onchange="updateCheck(5, false)">
+                        <span>Doesn't identify specific equipment</span>
+                    </label>
+                </div>
+                <div class="gap-alert" id="gap5">
+                    <h5>⚠️ MODERATE GAP</h5>
+                    <p>ANSI/ESD S20.20 requires traceability to specific equipment. Generic certificates that don't identify what was tested are not compliant.</p>
+                </div>
+            </div>
+            
+            <button class="analyze-btn" onclick="analyze()">Analyze My Certificates</button>
+            
+            <div class="summary" id="summary">
+                <h2>Certificate Analysis Complete</h2>
+                
+                <div class="score-display">
+                    <div class="score-number" id="scoreNum">0/5</div>
+                    <div class="score-label" id="scoreLabel">High Risk</div>
+                </div>
+                
+                <div class="gaps-found" id="gapsFound">
+                    <h3>⚠️ Gaps Found</h3>
+                    <ul id="gapsList"></ul>
+                </div>
+                
+                <div class="cta-section">
+                    <h3>Need Legitimate Certificates?</h3>
+                    <p>Our ISO 17025 accredited on-site calibration provides fully NIST-traceable certificates that pass any audit.</p>
+                    <a href="https://staticpros.com/contact" class="cta-button">Get Accredited Calibration →</a>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <footer>
+        <div class="container">
+            <p>© 2026 <a href="https://staticpros.com">Static Pros</a> / <a href="https://alternatesystems.com">Alternate Systems LLC</a></p>
+            <p style="margin-top: 10px; opacity: 0.8;">ISO 17025 Accredited | NIST Traceable</p>
+        </div>
+    </footer>
+    
+    <script>
+        const checks = {1: null, 2: null, 3: null, 4: null, 5: null};
+        const gapLabels = {
+            1: "Missing ISO 17025 accreditation number",
+            2: "No NIST traceability statement",
+            3: "Missing measurement uncertainty",
+            4: "No calibration dates/intervals",
+            5: "Equipment not identified"
+        };
+        
+        function updateCheck(num, pass) {
+            checks[num] = pass;
+            const alert = document.getElementById(`gap${num}`);
+            if (!pass) {
+                alert.classList.add('visible');
+            } else {
+                alert.classList.remove('visible');
+            }
+        }
+        
+        function analyze() {
+            const answered = Object.values(checks).filter(v => v !== null).length;
+            if (answered < 5) {
+                alert('Please answer all 5 questions');
+                return;
+            }
+            
+            const passed = Object.values(checks).filter(v => v === true).length;
+            const gaps = Object.entries(checks).filter(([k, v]) => v === false).map(([k, v]) => gapLabels[k]);
+            
+            document.getElementById('scoreNum').textContent = `${passed}/5`;
+            
+            let label = '';
+            if (passed === 5) label = '✓ FULLY COMPLIANT — Valid Certificates';
+            else if (passed >= 3) label = '⚠️ PARTIAL — Some Gaps';
+            else label = '🚨 HIGH RISK — Critical Gaps';
+            document.getElementById('scoreLabel').textContent = label;
+            
+            if (gaps.length > 0) {
+                document.getElementById('gapsList').innerHTML = gaps.map(g => `<li>${g}</li>`).join('');
+                document.getElementById('gapsFound').style.display = 'block';
+            } else {
+                document.getElementById('gapsFound').style.display = 'none';
+            }
+            
+            document.getElementById('summary').classList.add('visible');
+            document.getElementById('summary').scrollIntoView({ behavior: 'smooth' });
+        }
+    </script>
+</body>
+</html>

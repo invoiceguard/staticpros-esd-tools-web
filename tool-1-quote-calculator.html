@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ESD Calibration Quote Calculator | Static Pros</title>
+    <meta name="description" content="Calculate instant pricing for ISO 17025 accredited ESD workstation calibration. Get accurate quotes for multiple locations and service tiers.">
+    <meta name="keywords" content="ESD calibration cost, workstation calibration quote, ESD testing price, ISO17025 calibration cost">
+    
+    <meta property="og:title" content="ESD Calibration Quote Calculator | Static Pros">
+    <meta property="og:description" content="Get instant pricing for ISO 17025 accredited ESD workstation calibration.">
+    
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; background: #f5f7fa; color: #333; line-height: 1.6; }
+        .container { max-width: 900px; margin: 0 auto; padding: 20px; }
+        
+        header { background: linear-gradient(135deg, #1e3a5f, #2c5282); color: white; padding: 40px 0; text-align: center; }
+        header h1 { font-size: 2rem; margin-bottom: 10px; }
+        header p { opacity: 0.9; max-width: 600px; margin: 0 auto; }
+        
+        .calculator { background: white; margin: 30px 0; padding: 40px; border-radius: 12px; box-shadow: 0 4px 20px rgba(0,0,0,0.1); }
+        .form-group { margin-bottom: 25px; }
+        label { display: block; font-weight: 600; margin-bottom: 10px; color: #2d3748; font-size: 1.1rem; }
+        input, select { width: 100%; padding: 15px; border: 2px solid #e2e8f0; border-radius: 8px; font-size: 1rem; transition: border-color 0.2s; }
+        input:focus, select:focus { outline: none; border-color: #4299e1; }
+        
+        .service-tier { padding: 20px; margin: 15px 0; border: 2px solid #e2e8f0; border-radius: 8px; cursor: pointer; transition: all 0.2s; }
+        .service-tier:hover, .service-tier.selected { border-color: #4299e1; background: #ebf8ff; }
+        .service-tier h4 { color: #1e3a5f; margin-bottom: 5px; }
+        .service-tier .price { font-size: 1.5rem; color: #48bb78; font-weight: bold; }
+        .service-tier small { color: #718096; }
+        
+        .addon { display: flex; align-items: center; margin: 10px 0; padding: 10px; background: #f7fafc; border-radius: 6px; }
+        .addon input { width: auto; margin-right: 15px; }
+        .addon label { margin: 0; font-weight: normal; }
+        .addon-price { margin-left: auto; color: #48bb78; font-weight: 600; }
+        
+        .result { background: linear-gradient(135deg, #1e3a5f, #2c5282); color: white; border-radius: 12px; padding: 30px; margin-top: 30px; display: none; }
+        .result.visible { display: block; }
+        .result h3 { margin-bottom: 15px; }
+        .result .total { font-size: 3rem; font-weight: bold; }
+        .result .breakdown { margin-top: 15px; opacity: 0.9; }
+        
+        .cta-section { margin-top: 40px; padding: 30px; background: #f7fafc; border-radius: 12px; text-align: center; }
+        .cta-section h3 { margin-bottom: 15px; color: #1e3a5f; }
+        .cta-button { display: inline-block; background: #48bb78; color: white; padding: 18px 50px; border-radius: 50px; text-decoration: none; font-weight: 600; font-size: 1.2rem; margin-top: 15px; }
+        .cta-button:hover { background: #38a169; }
+        
+        .back-link { display: inline-flex; align-items: center; color: #4299e1; text-decoration: none; margin-bottom: 20px; }
+        .back-link::before { content: "←"; margin-right: 5px; }
+        
+        footer { background: #1e3a5f; color: white; padding: 30px 0; text-align: center; margin-top: 40px; }
+        footer a { color: #63b3ed; }
+        
+        @media (max-width: 768px) { .calculator { padding: 20px; } .result .total { font-size: 2rem; } }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container">
+            <h1>ESD Calibration Quote Calculator</h1>
+            <p>Get instant pricing for ISO 17025 accredited ESD workstation calibration</p>
+        </div>
+    </header>
+    
+    <div class="container">
+        <a href="index.html" class="back-link">← Back to All Tools</a>
+        
+        <div class="calculator">
+            <div class="form-group">
+                <label>Number of Workstations</label>
+                <input type="number" id="stations" min="1" value="1" onchange="calculate()">
+            </div>
+            
+            <div class="form-group">
+                <label>Calibration Service Tier</label>
+                <div class="service-tier" onclick="selectTier(500, this)" data-tier="500">
+                    <h4>Calibration Only</h4>
+                    <div class="price">$500/station</div>
+                    <small>Field calibration with pass/fail results. Best for budget planning.</small>
+                </div>
+                <div class="service-tier" onclick="selectTier(850, this)" data-tier="850">
+                    <h4>Calibration + Reporting</h4>
+                    <div class="price">$850/station</div>
+                    <small>Full documentation and detailed test reports included.</small>
+                </div>
+                <div class="service-tier" onclick="selectTier(1250, this)" data-tier="1250">
+                    <h4>Full ISO 17025 Certificate</h4>
+                    <div class="price">$1,250/station</div>
+                    <small>Accredited certificate with full NIST traceability. Required for defense/aerospace.</small>
+                </div>
+            </div>
+            
+            <div class="form-group">
+                <label>Optional Add-ons</label>
+                <div class="addon">
+                    <input type="checkbox" id="delivery" onchange="calculate()">
+                    <label>On-site Delivery</label>
+                    <span class="addon-price">+$25</span>
+                </div>
+                <div class="addon">
+                    <input type="checkbox" id="unboxing" onchange="calculate()">
+                    <label>Unboxing & Trash Removal</label>
+                    <span class="addon-price">+$50</span>
+                </div>
+                <div class="addon">
+                    <input type="checkbox" id="ionizer" onchange="calculate()">
+                    <label>Ionizer Testing</label>
+                    <span class="addon-price">+$150/station</span>
+                </div>
+            </div>
+            
+            <div class="result" id="result">
+                <h3>Estimated Total</h3>
+                <div class="total" id="totalPrice">$0</div>
+                <div class="breakdown" id="breakdown"></div>
+            </div>
+            
+            <div class="cta-section">
+                <h3>Need an Official Quote?</h3>
+                <p>This is an estimate. Contact us for a formal quote with scheduling and terms.</p>
+                <a href="https://staticpros.com/contact" class="cta-button">Get Official Quote →</a>
+            </div>
+        </div>
+    </div>
+    
+    <footer>
+        <div class="container">
+            <p>© 2026 <a href="https://staticpros.com">Static Pros</a> / <a href="https://alternatesystems.com">Alternate Systems LLC</a></p>
+            <p style="margin-top: 10px; opacity: 0.8;">ISO 17025 Accredited | NIST Traceable</p>
+        </div>
+    </footer>
+    
+    <script>
+        let selectedTier = 500;
+        document.querySelector('.service-tier').click();
+        
+        function selectTier(price, element) {
+            selectedTier = price;
+            document.querySelectorAll('.service-tier').forEach(t => t.classList.remove('selected'));
+            element.classList.add('selected');
+            calculate();
+        }
+        
+        function calculate() {
+            const stations = parseInt(document.getElementById('stations').value) || 1;
+            const delivery = document.getElementById('delivery').checked ? 25 : 0;
+            const unboxing = document.getElementById('unboxing').checked ? 50 : 0;
+            const ionizer = document.getElementById('ionizer').checked ? 150 : 0;
+            
+            const stationPrice = selectedTier + ionizer;
+            const total = (stationPrice * stations) + delivery + unboxing;
+            
+            document.getElementById('totalPrice').textContent = '$' + total.toLocaleString();
+            document.getElementById('breakdown').innerHTML = 
+                `${stations} workstation${stations > 1 ? 's' : ''} × $${stationPrice.toLocaleString()}<br>` +
+                `Add-ons: $${(delivery + unboxing).toLocaleString()}`;
+            document.getElementById('result').classList.add('visible');
+        }
+    </script>
+</body>
+</html>

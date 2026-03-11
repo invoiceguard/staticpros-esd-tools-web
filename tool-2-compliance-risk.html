@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ESD Compliance Risk Scorecard | Static Pros</title>
+    <meta name="description" content="10-question assessment of your ANSI/ESD S20.20 audit readiness. Identify critical compliance gaps before auditors do.">
+    <meta name="keywords" content="ESD audit checklist, ANSI ESD S20.20 audit, ESD compliance assessment, audit readiness">
+    
+    <meta property="og:title" content="ESD Compliance Risk Scorecard | Static Pros">
+    <meta property="og:description" content="10-question assessment of your ANSI/ESD S20.20 audit readiness.">
+    
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; background: #f5f7fa; color: #333; line-height: 1.6; }
+        .container { max-width: 800px; margin: 0 auto; padding: 20px; }
+        
+        header { background: linear-gradient(135deg, #1e3a5f, #2c5282); color: white; padding: 40px 0; text-align: center; }
+        header h1 { font-size: 2rem; margin-bottom: 10px; }
+        header p { opacity: 0.9; max-width: 600px; margin: 0 auto; }
+        
+        .assessment { background: white; margin: 30px 0; padding: 40px; border-radius: 12px; box-shadow: 0 4px 20px rgba(0,0,0,0.1); }
+        
+        .progress-bar { background: #e2e8f0; height: 8px; border-radius: 4px; margin-bottom: 30px; }
+        .progress-fill { background: linear-gradient(90deg, #4299e1, #48bb78); height: 100%; border-radius: 4px; width: 0%; transition: width 0.3s; }
+        
+        .question { display: none; margin-bottom: 30px; }
+        .question.active { display: block; }
+        .question-number { color: #718096; font-size: 0.9rem; margin-bottom: 10px; }
+        .question-text { font-size: 1.2rem; font-weight: 600; color: #2d3748; margin-bottom: 20px; }
+        
+        .answers { display: flex; flex-direction: column; gap: 12px; }
+        .answer-btn { padding: 18px 20px; border: 2px solid #e2e8f0; border-radius: 8px; background: white; cursor: pointer; text-align: left; font-size: 1rem; transition: all 0.2s; }
+        .answer-btn:hover { border-color: #4299e1; background: #ebf8ff; }
+        .answer-btn.selected { border-color: #4299e1; background: #ebf8ff; }
+        
+        .result { background: linear-gradient(135deg, #1e3a5f, #2c5282); color: white; border-radius: 12px; padding: 40px; display: none; }
+        .result.visible { display: block; }
+        .score-display { text-align: center; margin-bottom: 30px; }
+        .score-circle { width: 150px; height: 150px; border-radius: 50%; border: 8px solid; margin: 0 auto 20px; display: flex; align-items: center; justify-content: center; font-size: 2.5rem; font-weight: bold; }
+        .score-high .score-circle { border-color: #48bb78; color: #48bb78; }
+        .score-medium .score-circle { border-color: #ed8936; color: #ed8936; }
+        .score-low .score-circle { border-color: #f56565; color: #f56565; }
+        
+        .gaps { background: rgba(255,255,255,0.1); border-radius: 8px; padding: 25px; margin: 25px 0; }
+        .gaps h4 { margin-bottom: 15px; }
+        .gaps ul { list-style: none; }
+        .gaps li { padding: 10px 0; border-bottom: 1px solid rgba(255,255,255,0.1); }
+        .gaps li:last-child { border-bottom: none; }
+        .gaps li::before { content: "⚠️ "; }
+        
+        .nav-buttons { display: flex; justify-content: space-between; margin-top: 30px; }
+        .nav-btn { padding: 15px 40px; border: none; border-radius: 50px; font-size: 1rem; font-weight: 600; cursor: pointer; }
+        .nav-btn.prev { background: #e2e8f0; color: #4a5568; }
+        .nav-btn.next { background: #4299e1; color: white; }
+        .nav-btn.next:hover { background: #3182ce; }
+        
+        .cta-section { margin-top: 30px; padding: 30px; background: rgba(255,255,255,0.1); border-radius: 12px; text-align: center; }
+        .cta-section h3 { margin-bottom: 15px; }
+        .cta-button { display: inline-block; background: #48bb78; color: white; padding: 18px 50px; border-radius: 50px; text-decoration: none; font-weight: 600; font-size: 1.2rem; }
+        
+        .back-link { display: inline-flex; align-items: center; color: #4299e1; text-decoration: none; margin-bottom: 20px; }
+        .back-link::before { content: "←"; margin-right: 5px; }
+        
+        footer { background: #1e3a5f; color: white; padding: 30px 0; text-align: center; }
+        footer a { color: #63b3ed; }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container">
+            <h1>ESD Compliance Risk Scorecard</h1>
+            <p>10-question assessment of your ANSI/ESD S20.20 audit readiness</p>
+        </div>
+    </header>
+    
+    <div class="container">
+        <a href="index.html" class="back-link">← Back to All Tools</a>
+        
+        <div class="assessment" id="assessment">
+            <div class="progress-bar"><div class="progress-fill" id="progressFill"></div></div>
+            
+            <div class="question active" data-q="1">
+                <div class="question-number">Question 1 of 10</div>
+                <div class="question-text">Are your ESD workstations calibrated within the last 12 months?</div>
+                <div class="answers">
+                    <button class="answer-btn" onclick="answer(1, 10)">Yes, all current</button>
+                    <button class="answer-btn" onclick="answer(1, 5)">Some are, some aren't</button>
+                    <button class="answer-btn" onclick="answer(1, 0)">No, overdue or unknown</button>
+                </div>
+            </div>
+            
+            <div class="question" data-q="2">
+                <div class="question-number">Question 2 of 10</div>
+                <div class="question-text">Do your calibration certificates show ISO/IEC 17025 accreditation?</div>
+                <div class="answers">
+                    <button class="answer-btn" onclick="answer(2, 10)">Yes, clearly stated</button>
+                    <button class="answer-btn" onclick="answer(2, 3)">Not sure / hard to find</button>
+                    <button class="answer-btn" onclick="answer(2, 0)">No / don't have certificates</button>
+                </div>
+            </div>
+            
+            <div class="question" data-q="3">
+                <div class="question-number">Question 3 of 10</div>
+                <div class="question-text">Are your calibration certificates traceable to NIST?</div>
+                <div class="answers">
+                    <button class="answer-btn" onclick="answer(3, 10)">Yes, full NIST traceability</button>
+                    <button class="answer-btn" onclick="answer(3, 5)">Partial or unclear</button>
+                    <button class="answer-btn" onclick="answer(3, 0)">No / unknown</button>
+                </div>
+            </div>
+            
+            <div class="question" data-q="4">
+                <div class="question-number">Question 4 of 10</div>
+                <div class="question-text">Do you have documented ESD training records for all personnel?</div>
+                <div class="answers">
+                    <button class="answer-btn" onclick="answer(4, 10)">Yes, all current and documented</button>
+                    <button class="answer-btn" onclick="answer(4, 5)">Some records, some gaps</button>
+                    <button class="answer-btn" onclick="answer(4, 0)">No documented training</button>
+                </div>
+            </div>
+            
+            <div class="question" data-q="5">
+                <div class="question-number">Question 5 of 10</div>
+                <div class="question-text">Are wrist straps tested daily and results recorded?</div>
+                <div class="answers">
+                    <button class="answer-btn" onclick="answer(5, 10)">Yes, daily testing with records</button>
+                    <button class="answer-btn" onclick="answer(5, 5)">Tested but not consistently recorded</button>
+                    <button class="answer-btn" onclick="answer(5, 0)">No daily testing</button>
+                </div>
+            </div>
+            
+            <div class="question" data-q="6">
+                <div class="question-number">Question 6 of 10</div>
+                <div class="question-text">Do you have an EPA (ESD Protected Area) floor matting system?</div>
+                <div class="answers">
+                    <button class="answer-btn" onclick="answer(6, 10)">Yes, throughout EPA</button>
+                    <button class="answer-btn" onclick="answer(6, 5)">Only at some workstations</button>
+                    <button class="answer-btn" onclick="answer(6, 0)">No EPA floor mats</button>
+                </div>
+            </div>
+            
+            <div class="question" data-q="7">
+                <div class="question-number">Question 7 of 10</div>
+                <div class="question-text">Are your ESD bags/containers labeled and appropriate for contents?</div>
+                <div class="answers">
+                    <button class="answer-btn" onclick="answer(7, 10)">Yes, all properly labeled</button>
+                    <button class="answer-btn" onclick="answer(7, 5)">Mostly, some inconsistencies</button>
+                    <button class="answer-btn" onclick="answer(7, 0)">No / not sure</button>
+                </div>
+            </div>
+            
+            <div class="question" data-q="8">
+                <div class="question-number">Question 8 of 10</div>
+                <div class="question-text">Do you have humidity monitoring in your EPA?</div>
+                <div class="answers">
+                    <button class="answer-btn" onclick="answer(8, 10)">Yes, controlled within 40-60% RH</button>
+                    <button class="answer-btn" onclick="answer(8, 5)">Monitored but not controlled</button>
+                    <button class="answer-btn" onclick="answer(8, 0)">No humidity monitoring</button>
+                </div>
+            </div>
+            
+            <div class="question" data-q="9">
+                <div class="question-number">Question 9 of 10</div>
+                <div class="question-text">Do you have an ESD Control Program Plan document?</div>
+                <div class="answers">
+                    <button class="answer-btn" onclick="answer(9, 10)">Yes, current and reviewed</button>
+                    <button class="answer-btn" onclick="answer(9, 5)">Yes, but outdated</button>
+                    <button class="answer-btn" onclick="answer(9, 0)">No formal plan</button>
+                </div>
+            </div>
+            
+            <div class="question" data-q="10">
+                <div class="question-number">Question 10 of 10</div>
+                <div class="question-text">Have you had an internal ESD audit in the last 12 months?</div>
+                <div class="answers">
+                    <button class="answer-btn" onclick="answer(10, 10)">Yes, with documented findings</button>
+                    <button class="answer-btn" onclick="answer(10, 5)">Informal review only</button>
+                    <button class="answer-btn" onclick="answer(10, 0)">No internal audit</button>
+                </div>
+            </div>
+        </div>
+        
+        <div class="result" id="result">
+            <div class="score-display">
+                <h2>Your Compliance Score</h2>
+                <div class="score-circle" id="scoreCircle">0</div>
+                <p id="scoreLabel">Low Risk</p>
+            </div>
+            
+            <div class="gaps" id="gapsSection">
+                <h4>Priority Gaps to Address:</h4>
+                <ul id="gapsList"></ul>
+            </div>
+            
+            <div class="cta-section">
+                <h3>Need Help Closing These Gaps?</h3>
+                <p>Our ISO 17025 accredited team can help you achieve full compliance.</p>
+                <a href="https://staticpros.com/contact" class="cta-button">Get Compliance Support →</a>
+            </div>
+        </div>
+    </div>
+    
+    <footer>
+        <div class="container">
+            <p>© 2026 <a href="https://staticpros.com">Static Pros</a> / <a href="https://alternatesystems.com">Alternate Systems LLC</a></p>
+            <p style="margin-top: 10px; opacity: 0.8;">ISO 17025 Accredited | NIST Traceable</p>
+        </div>
+    </footer>
+    
+    <script>
+        let currentQ = 1;
+        let totalScore = 0;
+        let gaps = [];
+        
+        const gapMessages = {
+            1: "Calibration currency - Schedule annual calibration now",
+            2: "ISO 17025 accreditation - Verify certificates show accreditation",
+            3: "NIST traceability - Request NIST-traceable certificates",
+            4: "Training documentation - Implement ESD training program", 
+            5: "Wrist strap testing - Start daily testing with records",
+            6: "EPA floor mats - Install conductive floor matting",
+            7: "ESD packaging - Audit and label all packaging",
+            8: "Humidity control - Install monitoring and control systems",
+            9: "ESD Program Plan - Create ANSI/ESD S20.20 compliant plan",
+            10: "Internal audits - Schedule quarterly self-audits"
+        };
+        
+        function answer(q, score) {
+            totalScore += score;
+            if (score < 8) gaps.push(gapMessages[q]);
+            
+            document.querySelector(`[data-q="${q}"]`).classList.remove('active');
+            
+            if (q < 10) {
+                document.querySelector(`[data-q="${q+1}"]`).classList.add('active');
+                currentQ = q + 1;
+                document.getElementById('progressFill').style.width = (q * 10) + '%';
+            } else {
+                showResult();
+            }
+        }
+        
+        function showResult() {
+            document.getElementById('assessment').style.display = 'none';
+            const result = document.getElementById('result');
+            result.classList.add('visible');
+            
+            const score = Math.round(totalScore / 10);
+            document.getElementById('scoreCircle').textContent = score;
+            
+            const gapsList = document.getElementById('gapsList');
+            gapsList.innerHTML = gaps.slice(0, 5).map(g => `<li>${g}</li>`).join('');
+            
+            let label = '';
+            if (score >= 80) {
+                label = 'Low Risk - Well Prepared';
+                result.className = 'result visible score-high';
+            } else if (score >= 50) {
+                label = 'Medium Risk - Some Gaps';
+                result.className = 'result visible score-medium';
+            } else {
+                label = 'High Risk - Significant Gaps';
+                result.className = 'result visible score-low';
+            }
+            document.getElementById('scoreLabel').textContent = label;
+        }
+    </script>
+</body>
+</html>
